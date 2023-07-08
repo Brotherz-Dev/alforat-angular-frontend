@@ -1,0 +1,15 @@
+html, body { height: 100%; }
+
+
+
+
+body{
+    margin: 0%;
+}
+
+img {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+    margin-bottom: 2rem;
+}

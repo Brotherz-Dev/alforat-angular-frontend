@@ -1,0 +1,131 @@
+<mat-tab-group mat-stretch-tabs>
+    <mat-tab label="מידע אישי">
+        <mat-card>
+            <mat-card-title>מידע אישי</mat-card-title>
+            <br>
+
+            <div class="example-container">
+                <mat-form-field class="example-full-width" appearance="outline" appearance="fill">
+                    <mat-label>שם פרטי</mat-label>
+                    <input type="text" matInput readonly> {{this.user?.firstName}}
+                </mat-form-field>
+                <mat-form-field class="example-full-width" appearance="outline" appearance="fill">
+                    <mat-label>שם משפחה</mat-label>
+                    <input type="text" matInput readonly> {{this.user?.lastName}}
+                </mat-form-field>
+                <mat-form-field class="example-full-width" appearance="outline" appearance="fill">
+                    <mat-label>אימייל</mat-label>
+                    <input type="text" matInput readonly> {{this.user?.email}}
+                </mat-form-field>
+                <mat-form-field class="example-full-width" appearance="outline" appearance="fill">
+                    <mat-label>שם משתמש</mat-label>
+                    <input type="text" matInput readonly> {{this.user?.username}}
+                </mat-form-field>
+                <mat-form-field class="example-full-width" appearance="outline" appearance="fill">
+                    <mat-label>מספר פרטי</mat-label>
+                    <input type="text" matInput readonly> {{this.user?.phoneNumber}}
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width" appearance="outline" appearance="fill">
+                    <mat-label>מזהה טלגרם</mat-label>
+                    <input type="text"  matInput readonly> {{this.user?.telegramId}}
+                </mat-form-field>
+            </div>
+
+        </mat-card>
+
+    </mat-tab>
+    <mat-tab label="ערוך פרופיל">
+        <mat-card>
+            <mat-card-title>עדכן מידע</mat-card-title>
+            <br>
+            <form [formGroup]="updateProfileGroup" (ngSubmit)="updateProfile()">
+                <div class="example-container">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>שם פרטי</mat-label>
+                        <input type="email" formControlName="firstName" matInput>
+                        <mat-error *ngIf="updateProfileGroup.get('firstName')?.hasError('required')">
+                            הזן שם פרטי
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>שם משפחה</mat-label>
+                        <input type="text" formControlName="lastName" matInput>
+                        <mat-error *ngIf="updateProfileGroup.get('lastName')?.hasError('required')">
+                            הזן שם משפחה
+                        </mat-error>
+                    </mat-form-field>
+
+
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>מספר טלפון פרטי (אופציונלי)</mat-label>
+                        <span matPrefix>+972 &nbsp;</span>
+                        <input type="tel" matInput placeholder="555-555-1234" pattern="[0-9]+" formControlName="phoneNumber">
+                        <mat-icon matSuffix>mode_edit</mat-icon>
+                    </mat-form-field>
+
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>מזהה טלגרם</mat-label>
+                        <input type="text" formControlName="telegramId" pattern="[0-9]+" matInput>
+                    </mat-form-field>
+                </div>
+                <div class="d-grid">
+                    <button class="btn btn-outline-dark example-full-width" type="submit">שמירה</button>
+                </div>
+            </form>
+        </mat-card>
+    </mat-tab>
+
+    <mat-tab label="שנה סיסמא">
+        <mat-card>
+            <mat-card-title>שנה סיסמא</mat-card-title>
+            <br>
+            <form [formGroup]="updatePasswordGroup" (ngSubmit)="updatePassword()">
+                <div class="example-container">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>סיסמה ישנה</mat-label>
+                        <input type="password" formControlName="oldPassword" matInput>
+                        <mat-error *ngIf="updatePasswordGroup.get('oldPassword')?.hasError('required')">
+                            הזן סיסמה ישנה
+                        </mat-error>
+                        <mat-error *ngIf="updatePasswordGroup.get('oldPassword')?.hasError('minlength')">
+                            <strong>{{minLength}} לפחות</strong>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>סיסמה חדשה</mat-label>
+                        <input type="password" formControlName="newPassword" matInput>
+                        <mat-error *ngIf="updatePasswordGroup.get('newPassword')?.hasError('required')">
+                            הזן סיסמה חדשה
+                        </mat-error>
+                        <mat-error *ngIf="updatePasswordGroup.get('newPassword')?.hasError('minlength')">
+                            <strong>{{minLength}} לפחות</strong>
+                        </mat-error>
+                    </mat-form-field>
+
+
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>אשר סיסמה</mat-label>
+                        <input type="password" formControlName="confirmPassword" matInput>
+                        <mat-error *ngIf="updatePasswordGroup.get('confirmPassword')?.hasError('required')">
+                            הזן סיסמה
+                        </mat-error>
+                        <mat-error *ngIf="updatePasswordGroup.get('confirmPassword')?.hasError('minlength')">
+                            <strong>{{minLength}} לפחות</strong>
+                        </mat-error>
+                        <mat-error *ngIf="updatePasswordGroup.get('confirmPassword')?.hasError('matching')">
+                            הסיסמאות לא תואמות
+                        </mat-error>
+                    </mat-form-field>
+
+
+                    <div class="d-grid">
+                        <button class="btn btn-outline-dark example-full-width" type="submit">שמירה</button>
+                    </div>
+                </div>
+            </form>
+        </mat-card>
+    </mat-tab>
+</mat-tab-group>

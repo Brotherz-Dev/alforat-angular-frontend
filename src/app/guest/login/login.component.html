@@ -1,0 +1,55 @@
+<div>
+  <form [formGroup]="loginForm" (submit)="login()">
+
+    <h2>היי, טוב לראות אותך</h2>
+
+
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>אימייל</mat-label>
+      <input type="text" formControlName="email" matInput chan>
+      <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+        הזן אימייל
+      </mat-error>
+      <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
+        נא להזין אימייל חוקי
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>סיסמה</mat-label>
+      <input matInput formControlName="password" [type]="hide ? 'password' : 'text'">
+      <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide">
+        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+      <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+        הזן סיסמה
+      </mat-error>
+      <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">
+        <strong>{{8}} לפחות</strong>
+      </mat-error>
+    </mat-form-field>
+
+
+    <div class="text-right">
+      <!-- Simple link -->
+      <p class="mb-0">
+        <a class="red-color" href="/auth/resetpassword">שכחת את הסיסמא</a>
+      </p>
+    </div>
+
+    <br>
+    <div class="d-grid">
+      <button class="btn btn-outline-dark example-full-width" type="submit" [class.spinner]="loading"
+        [disabled]="loading">התחברות</button>
+    </div>
+  </form>
+  <br>
+  <div>
+    <p class="mb-0  text-left"><strong>להירשם</strong></p>
+    <br>
+    <a href="/auth/register">
+      <button class="btn btn-outline-info example-full-width">אין לך חשבון? להרשמה</button>
+    </a>
+  </div>
+</div>

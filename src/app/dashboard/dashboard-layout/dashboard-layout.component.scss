@@ -1,0 +1,99 @@
+.sidenav-container {
+  flex: 1;
+  height: 100%;
+  min-height: 100%;
+  width: 100%;
+  min-width: 100%;
+}
+
+mat-toolbar {
+  background-color: #232F34;
+}
+
+.mat-icon {
+  vertical-align: middle;
+  margin-right: 1rem;
+}
+
+#logout_sidebar_button {
+  position: absolute;
+  display: inline-block;
+  bottom: 0;
+}
+
+
+.sidenav {
+  width: 200px;
+}
+
+.logout-button {
+  color: white;
+}
+
+.img-container{
+  justify-content: center;
+}
+
+img {
+  width: 150px;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+
+.logout-button:hover {
+  background-color: gray;
+}
+
+// .active-list-item {
+//   color: black !important;
+//   /* Note: You could also use a custom theme */
+//   font-weight: bolder;
+//   background-color: whitesmoke;
+// }
+
+.my-container {
+  width: 100%;
+  min-width: 100%;
+  padding-left: 3%;
+  padding-right: 3%;
+  padding-top: 2rem;
+}
+
+
+.active-list-item {
+  color: rgba(255, 0, 98, 0.495);
+  font-weight: bolder;
+
+  ::ng-deep {
+    .mat-list-item-content {
+      background: whitesmoke !important;
+
+      &:hover {
+        background: #000000 !important;
+        color: white;
+      }
+    }
+  }
+}
+
+
+.mat-list-item {
+  font-size: 0.8rem;
+  margin-bottom: 4px;
+
+  &:hover {
+    color: #f2f5f7 !important;
+  }
+
+  ::ng-deep {
+    .mat-list-item-content {
+      border-radius: 5px;
+      margin: 0 8px;
+
+      &:hover {
+        background: #2c3344 !important;
+      }
+    }
+  }
+}
