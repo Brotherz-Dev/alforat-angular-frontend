@@ -9,7 +9,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { ParentProfileComponent } from './account/parent-profile/parent-profile.component';
 import { ProfileComponent } from './account/profile/profile.component';
 import { AppRoutingModule } from './app-routing.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { DashboardHomeComponent } from './dashboard/dashboard-home/dashboard-home.component';
 import { DashboardLayoutComponent } from './dashboard/dashboard-layout/dashboard-layout.component';
@@ -35,21 +35,40 @@ import { AuthenticationLayoutComponent } from './guest/authentication-layout/aut
 import { ResetPasswordComponent } from './guest/reset-password/reset-password.component';
 import { ErrorInterceptor } from './services/auth/error-interceptor/error-interceptor';
 import { HttpRequestInterceptor } from './services/auth/token-incpector/http-interceptor';
+import { ProductTypesComponent } from './product-types/product-types.component';
+import { ProductsTableComponent } from './products/products-table/products-table.component';
+import { ProductTypesTableComponent } from './product-types/product-types-table/product-types-table.component';
+import { UpdateProductComponent } from './products/update-product/update-product.component';
+import { UpdateProductTypeComponent } from './product-types/update-product-type/update-product-type.component';
+import { AddProductComponent } from './products/add-product/add-product.component';
+import { AddProductTypeComponent } from './product-types/add-product-type/add-product-type.component';
+import { StartSaleComponent } from './start-sale/start-sale.component';
+import { StartSaleTableComponent } from './start-sale/start-sale-table/start-sale-table.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    ProductTypesComponent,
+    UpdateProductComponent,
+    UpdateProductTypeComponent,
+    AddProductComponent,
+    AddProductTypeComponent,
     LoginComponent,
     RegisterComponent,
     DashboardHomeComponent,
+    ProductsTableComponent,
+    ProductTypesTableComponent,
     DashboardLayoutComponent,
     ParentProfileComponent,
     ProfileComponent,
+    StartSaleComponent,
+    StartSaleTableComponent,
     AuthenticationLayoutComponent,
     ResetPasswordComponent
   ],
   imports: [
     ToastrModule.forRoot(),
+    NoopAnimationsModule,
     NgxSpinnerModule,
     BrowserModule,
     AppRoutingModule,

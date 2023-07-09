@@ -1,0 +1,10 @@
+.full-width-table {
+    width: 100%;
+    direction: ltr;
+    }
+    
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+    direction: ltr;
+}
