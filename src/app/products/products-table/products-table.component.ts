@@ -47,7 +47,7 @@ export class ProductsTableComponent implements OnInit {
   getProducts(){
     this.productService.getProducts()
       .subscribe(data => {
-        console.log(data);
+        console.log( 'products ' , data);
         this.datasource.data = data;
         this.changeDetectorRefs.detectChanges();
       });
