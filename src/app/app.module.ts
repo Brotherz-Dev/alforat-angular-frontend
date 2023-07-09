@@ -44,11 +44,15 @@ import { AddProductComponent } from './products/add-product/add-product.componen
 import { AddProductTypeComponent } from './product-types/add-product-type/add-product-type.component';
 import { StartSaleComponent } from './start-sale/start-sale.component';
 import { StartSaleTableComponent } from './start-sale/start-sale-table/start-sale-table.component';
+import { SaleComponent } from './sale/sale.component';
+import { SalesTableComponent } from './sale/sales-table/sales-table.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ProductTypesComponent,
+    SaleComponent,
+    SalesTableComponent,
     UpdateProductComponent,
     UpdateProductTypeComponent,
     AddProductComponent,
