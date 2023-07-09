@@ -10,6 +10,10 @@ import { LoginComponent } from './guest/login/login.component';
 import { RegisterComponent } from './guest/register/register.component';
 import { ResetPasswordComponent } from './guest/reset-password/reset-password.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { ProductTypesComponent } from './product-types/product-types.component';
+import { ProductsComponent } from './products/products.component';
+import { SaleComponent } from './sale/sale.component';
+import { StartSaleComponent } from './start-sale/start-sale.component';
 
 
 
@@ -27,6 +31,11 @@ const routes: Routes = [
     path: 'app', component: DashboardLayoutComponent, canActivate: [AuthGuard], children: [
       { path: 'dashboard', component: DashboardHomeComponent, canActivate: [AuthGuard] },
       { path: 'profile', component: ParentProfileComponent, canActivate: [AuthGuard] },
+      { path: 'sales', component: SaleComponent, canActivate: [] },
+      { path: 'products', component: ProductsComponent, canActivate: [] },
+      //{ path: 'products/update/:id', component: UpdateProductComponent,canActivate: [AuthGuard]},
+      { path: 'productTypes', component: ProductTypesComponent, canActivate: [] },
+      { path: 'startSale', component: StartSaleComponent, canActivate: [] },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: '**', component: PageNotFoundComponent }
     ]

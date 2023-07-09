@@ -46,6 +46,7 @@ import { StartSaleComponent } from './start-sale/start-sale.component';
 import { StartSaleTableComponent } from './start-sale/start-sale-table/start-sale-table.component';
 import { SaleComponent } from './sale/sale.component';
 import { SalesTableComponent } from './sale/sales-table/sales-table.component';
+import { ProductsComponent } from './products/products.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { SalesTableComponent } from './sale/sales-table/sales-table.component';
     StartSaleComponent,
     StartSaleTableComponent,
     AuthenticationLayoutComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    ProductsComponent
   ],
   imports: [
     ToastrModule.forRoot(),
