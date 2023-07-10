@@ -1,6 +1,6 @@
 .full-width-table {
-    width: 100%;
-    direction: ltr;
+    width: fit-content;
+    direction: rtl;
     }
     
 .mat-form-field {
@@ -8,9 +8,13 @@
     width: 100%;
     direction: ltr;
 }
+td {text-align: right; direction: rtl;}
 
 mat-footer-cell {
     width: auto;
+}
+mat-form-field{
+    width: 100%;
 }
 
 .last-added {

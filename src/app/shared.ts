@@ -1,27 +1,26 @@
 export interface Product{
     id : number;
-    name : string;
     barCode : string;
-    buyingPrice: number;
+    name : string;
+    productType : ProductType;
+    buyingPrice?: number;
     sellingPrice : number;
-    description : string;
-    productType : ProductType
+    quantity?: number;
+    description?: string;
+    createdBy?: string;
+    lastUpdatedBy?: string;
+    keywords?: string[];
+
 }
 
 export interface ProductType{
-    id: number
-    name: string
-    description: string 
+    id: number;
+    name?: string;
+    description?: string;
+    createdBy?: string;
+    lastUpdatedBy?: string;
 }
 
-export interface User {
-    id ?: number;
-    username: string;
-    full_name: string;
-    email : string;
-    role: string;
-    disabled : boolean;
-}
 
 export interface Role {
     role: string;
@@ -29,18 +28,39 @@ export interface Role {
 export interface SaleState {
     id?:number;
     product_id?: number;
-    barCode?: string;
-    name: string;
+    quantity: number
+    productName: string;
+    sellingPrice: number;
+    created_at?: Date;
+}
+
+export interface CreateSaleStateDTO {
+    product_id?: number;
+    productBarCode?: string;
+    productName?: string;
+    quantity: number
     price: number;
-    count: number
-  }
+}
+
+export interface CreateSaleDTO{
+    customerName?:string;
+    customerPhoneNumber?:string;
+    customerId?: string;
+    customerCity?: string;
+    description?: string;
+    saleStates:CreateSaleDTO[];
+}
 export interface Sale{
     id:number;
+    uuid: string;
     customerName:string;
-    phoneNumber :string;
-    creator:string;
+    customerPhoneNumber :string;
+    customerId: string;
+    customerCity: string;
+    description: string;
     saleStates:SaleState[];
-    created_at : Date;
+    createdBy:string;
+    created_at?: Date;
 }
 export interface SaleDashboard{
     salesThisWeek: number ;

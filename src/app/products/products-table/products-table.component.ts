@@ -18,7 +18,7 @@ export class ProductsTableComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id','name', 'barCode', 'sellingPrice','buyingPrice','description','productType','actions'];
+  displayedColumns = ['id','name', 'barCode', 'sellingPrice','buyingPrice','description','productType','keywords','actions'];
 
   datasource: MatTableDataSource<Product> = new MatTableDataSource<Product>();
 

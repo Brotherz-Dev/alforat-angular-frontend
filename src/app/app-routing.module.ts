@@ -27,15 +27,16 @@ const routes: Routes = [
       { path: '**', component: PageNotFoundComponent }
     ]
   },
+  { path: 'startSale', component: StartSaleComponent, canActivate: [AuthGuard] },
+
   {
     path: 'app', component: DashboardLayoutComponent, canActivate: [AuthGuard], children: [
       { path: 'dashboard', component: DashboardHomeComponent, canActivate: [AuthGuard] },
       { path: 'profile', component: ParentProfileComponent, canActivate: [AuthGuard] },
-      { path: 'sales', component: SaleComponent, canActivate: [] },
-      { path: 'products', component: ProductsComponent, canActivate: [] },
+      { path: 'sales', component: SaleComponent, canActivate: [AuthGuard] },
+      { path: 'products', component: ProductsComponent, canActivate: [AuthGuard] },
       //{ path: 'products/update/:id', component: UpdateProductComponent,canActivate: [AuthGuard]},
-      { path: 'productTypes', component: ProductTypesComponent, canActivate: [] },
-      { path: 'startSale', component: StartSaleComponent, canActivate: [] },
+      { path: 'productTypes', component: ProductTypesComponent, canActivate: [AuthGuard] },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: '**', component: PageNotFoundComponent }
     ]

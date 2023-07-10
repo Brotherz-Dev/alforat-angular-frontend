@@ -95,11 +95,11 @@ export class SalesTableComponent implements OnInit {
   calculateTotal() {
     if(this.sale === undefined)
     return 0;
-    const x = this.sale?.saleStates.map(t => t.price * t.count).reduce((acc, value) => acc + value, 0);
+    const x = this.sale?.saleStates.map(t => t.sellingPrice * t.quantity).reduce((acc, value) => acc + value, 0);
     return x.toFixed(2);
   }
   calculatePrice(state: SaleState) {
-    const price = state.price * state.count;
+    const price = state.sellingPrice * state.quantity;
     if (price > 0) {
       return price.toFixed(2);
     }

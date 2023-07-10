@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProductService } from 'src/app/services/products/product.service';
-import { Product,SaleState} from 'src/app/shared';
+import { CreateSaleStateDTO, Product,SaleState} from 'src/app/shared';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SaleService } from 'src/app/services/sales/sale.service';
@@ -17,13 +17,15 @@ import { ReportService } from 'src/app/services/reporting/report.service';
 
 export class StartSaleTableComponent implements OnInit {
 
-  datasource: MatTableDataSource<SaleState> = new MatTableDataSource<SaleState>();
-  states: SaleState[] = [];
+  datasource: MatTableDataSource<CreateSaleStateDTO> = new MatTableDataSource<CreateSaleStateDTO>();
+  states: CreateSaleStateDTO[] = [];
   displayedColumns: string[] = ['name', 'barCode', 'price', 'count', 'calculatedPrice', 'actions'];
   sucessAudio: HTMLAudioElement;
   errorAudio: HTMLAudioElement;
   lastAddedProductIndex: number = -1;
   loading = false;
+
+  showCustomerInputs = false;
 
   saleId: number = -1;
   
@@ -38,13 +40,18 @@ export class StartSaleTableComponent implements OnInit {
 
     this.saleForm = this.formBuilder.group({
       customerName: [''],
-      phoneNumber: [''],
+      customerPhoneNumber: [''],
+      customerId: [''],
+      customerCity: [''],
       saleStates: this.datasource.data,
     })
 
   }
   ngOnInit(): void {
 
+  }
+  showCustomerData(){
+    this.showCustomerInputs = !this.showCustomerInputs;
   }
 
   searchProduct(event: Event) {
@@ -69,12 +76,13 @@ export class StartSaleTableComponent implements OnInit {
           }
         }
       });
+      
   }
   addProductToArray(p: Product) {
     let added = false;
     this.states.forEach((element, i) => {
-      if (p.barCode === element.barCode) {
-        element.count = element.count + 1;
+      if (p.id === element.product_id) {
+        element.quantity = element.quantity + 1;
         added = true;
         this.lastAddedProductIndex = i;
         return;
@@ -83,12 +91,23 @@ export class StartSaleTableComponent implements OnInit {
     if (added) {
       return;
     }
-    const state: SaleState = {
+    const state: CreateSaleStateDTO = {
       product_id: p.id,
-      name: p.name,
-      barCode: p.barCode,
+      productBarCode: p.barCode,
+      quantity: 1,
+      productName: p.name,
       price: p.sellingPrice,
-      count: 1
+    };
+    this.states.push(state);
+    this.lastAddedProductIndex = this.states.length - 1;
+    return;
+  }
+  addManualProduct(name : string , price : number) {;
+   
+    const state: CreateSaleStateDTO = {
+      quantity: 1,
+      productName: name,
+      price: price,
     };
     this.states.push(state);
     this.lastAddedProductIndex = this.states.length - 1;
@@ -102,10 +121,10 @@ export class StartSaleTableComponent implements OnInit {
   }
 
   calculateTotal() {
-    const x = this.states.map(t => t.price * t.count).reduce((acc, value) => acc + value, 0);
+    const x = this.states.map(t => t.price * t.quantity).reduce((acc, value) => acc + value, 0);
     return x.toFixed(2);
   }
-  removeProduct(state: SaleState) {
+  removeProduct(state: CreateSaleStateDTO) {
     const index = this.states.indexOf(state, 0);
     if (index > -1) {
       this.states.splice(index, 1);
@@ -113,8 +132,8 @@ export class StartSaleTableComponent implements OnInit {
     this.datasource.data = this.states;
     this.changeDetectorRefs.detectChanges();
   }
-  calculatePrice(state: SaleState) {
-    const price = state.price * state.count;
+  calculatePrice(state: CreateSaleStateDTO) {
+    const price = state.price * state.quantity;
     if (price > 0) {
       return price.toFixed(2);
     }
