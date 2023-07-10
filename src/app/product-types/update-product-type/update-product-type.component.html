@@ -1,18 +1,18 @@
 
-<h2 mat-dialog-title>Update Product Type</h2>
+<h2 mat-dialog-title>עדכן את סוג המוצר</h2>
 
 <form [formGroup]="productTypeForm" (ngSubmit)="onSubmit()">
     <mat-dialog-content>
         <mat-form-field appearance="outline">
-            <mat-label>Id</mat-label>
+            <mat-label>מס.</mat-label>
             <input matInput id="id" type="text" [value]="productType.id" [disabled]="true" />
         </mat-form-field>
         <mat-form-field appearance="outline">
-            <mat-label>Product Type Name</mat-label>
+            <mat-label>שם סוג מוצר</mat-label>
             <input matInput formControlName="name" id="name" type="text" required />
         </mat-form-field>
         <mat-form-field appearance="fill">
-            <mat-label>Description</mat-label>
+            <mat-label>תיאור</mat-label>
             <textarea matInput formControlName="description" id="description" type="text"></textarea>
         </mat-form-field>
 
@@ -20,8 +20,8 @@
     </mat-dialog-content>
 
     <mat-dialog-actions align="end">
-        <button mat-raised-button mat-dialog color="primary" id="submit" type="submit">Save</button>
-        <button mat-raised-button mat-dialog-close color="warn">Cancel</button>
+        <button mat-raised-button mat-dialog color="primary" id="submit" type="submit">שמור</button>
+        <button mat-raised-button mat-dialog-close color="warn">חזרה</button>
     </mat-dialog-actions>
 
 </form>

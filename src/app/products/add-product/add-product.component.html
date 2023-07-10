@@ -1,17 +1,17 @@
-<h2 mat-dialog-title>Add Product</h2>
+<h2 mat-dialog-title>הוספת מוצר</h2>
 
 <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
     <mat-dialog-content>
         <mat-form-field appearance="outline">
-            <mat-label>BarCode</mat-label>
+            <mat-label>ברקוד</mat-label>
             <input matInput formControlName="barCode" id="barCode" type="text" required  />
         </mat-form-field>
         <mat-form-field appearance="outline">
-            <mat-label>Name</mat-label>
+            <mat-label>שם</mat-label>
             <input matInput formControlName="name" id="name" type="text" required />
         </mat-form-field>
         <mat-form-field appearance="fill">
-            <mat-label>Type</mat-label>
+            <mat-label>סוג</mat-label>
             <mat-select formControlName="productType_id" required>
                 <mat-option *ngFor="let productType of productTypes" [value]="productType.id">
                     {{productType.name}}
@@ -19,23 +19,23 @@
             </mat-select>
         </mat-form-field>
         <mat-form-field appearance="outline">
-            <mat-label>Buying-Price</mat-label>
+            <mat-label>מחיר קנייה</mat-label>
             <input matInput formControlName="buyingPrice" id="buyingPrice" type="number" step="0.01"/>
         </mat-form-field>
         <mat-form-field appearance="outline">
-            <mat-label>Selling-Price</mat-label>
+            <mat-label>מחיר המכירה</mat-label>
             <input matInput formControlName="sellingPrice" type="number" step="0.01" id="sellingPrice" required />
         </mat-form-field>
         <mat-form-field appearance="fill">
-            <mat-label>Description</mat-label>
+            <mat-label>תיאור</mat-label>
             <textarea matInput formControlName="description" id="description" type="text"></textarea>
         </mat-form-field>
        
     </mat-dialog-content>
 
     <mat-dialog-actions align="end">
-        <button mat-raised-button mat-dialog color="primary" id="submit" type="submit">Save</button>
-        <button mat-raised-button mat-dialog-close color="warn">Cancel</button>
+        <button mat-raised-button mat-dialog color="primary" id="submit" type="submit">שמור</button>
+        <button mat-raised-button mat-dialog-close color="warn">חזרה</button>
     </mat-dialog-actions>
 
 </form>

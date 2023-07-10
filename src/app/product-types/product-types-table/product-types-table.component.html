@@ -1,59 +1,56 @@
 <button mat-raised-button class="table-action-btn" color="primary" (click)="addProductType()">
-    <mat-icon>add</mat-icon> Add Product Type
+  <mat-icon>add</mat-icon> הוסף סוג מוצר
 </button>
 
-<mat-form-field>
-    <mat-label>Search</mat-label>
+<div>
+  <mat-form-field>
+    <mat-label>חפש</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Example: rock" #input>
-</mat-form-field>
+  </mat-form-field>
 
+</div>
 <div class="mat-elevation-z8">
-    <table mat-table class="full-width-table" matSort aria-label="ProductTypes" [dataSource]="datasource">
-        <!-- Id Column -->
-        <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>id</th>
-            <td mat-cell *matCellDef="let row">{{row.id}}</td>
-        </ng-container>
+  <table mat-table class="full-width-table" matSort aria-label="ProductTypes" [dataSource]="datasource">
+    <!-- Id Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>מספר</th>
+      <td mat-cell *matCellDef="let row">{{row.id}}</td>
+    </ng-container>
 
-        <!-- Name Column -->
-        <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>name</th>
-            <td mat-cell *matCellDef="let row">{{row.name}}</td>
-        </ng-container>
-
-
-        <ng-container matColumnDef="description">
-            <th mat-header-cell class="clear-table-cell" *matHeaderCellDef mat-sort-header>description</th>
-            <td mat-cell class="clear-table-cell" *matCellDef="let productType">
-                <mat-icon color="primary" matTooltip="{{productType.description}}">speaker_notes</mat-icon>
-            </td>
-        </ng-container>
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>שם</th>
+      <td mat-cell *matCellDef="let row">{{row.name}}</td>
+    </ng-container>
 
 
+    <ng-container matColumnDef="description">
+      <th mat-header-cell class="clear-table-cell" *matHeaderCellDef mat-sort-header>תיאור</th>
+      <td mat-cell class="clear-table-cell" *matCellDef="let productType">
+        <mat-icon *ngIf="productType.description" color="primary" matTooltip="{{productType.description}}">speaker_notes</mat-icon>
+      </td>
+    </ng-container>
 
-        <!-- Actions Column -->
 
-      <!-- Actions Column -->
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>actions</th>
-        <td mat-cell *matCellDef="let row">
-          <button mat-button (click)="editProductType(row)">
-            <mat-icon color="primary">edit_note</mat-icon>
-          </button>
-        </td>
-      </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
+    <!-- Actions Column -->
 
-    <mat-paginator #paginator
-    [length]="datasource.data.length"
-    [pageIndex]="0"
-    [pageSize]="10"
-    [pageSizeOptions]="[5, 10, 20, 50, 100]"
-    showFirstLastButtons
-    aria-label="Select page of product types">
-</mat-paginator>
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+      <td mat-cell *matCellDef="let row">
+        <button mat-button (click)="editProductType(row)">
+          <mat-icon color="primary">edit_note</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator #paginator [length]="datasource.data.length" [pageIndex]="0" [pageSize]="10"
+    [pageSizeOptions]="[5, 10, 20, 50, 100]" showFirstLastButtons aria-label="Select page of product types">
+  </mat-paginator>
 
 </div>

@@ -27,7 +27,7 @@ export class UpdateProductComponent implements OnInit ,AfterViewInit{
       name: [data.name, Validators.required],
       barCode: [data.barCode, Validators.required],
       buyingPrice: [data.buyingPrice],
-      sellingPrice: [data.sellingPrice, Validators.required],
+      sellingPrice: [data.sellingPrice, [Validators.required ,Validators.min(0.1)]],
       description: [data.description],
       productType_id: [data.productType.id, Validators.required]
     })

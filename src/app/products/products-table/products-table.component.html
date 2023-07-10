@@ -1,49 +1,51 @@
-<button mat-raised-button class="table-action-btn" color="primary" (click)="addProduct()"><mat-icon>add</mat-icon> Add Product</button>
+<button mat-raised-button class="table-action-btn" color="primary" (click)="addProduct()"><mat-icon>add</mat-icon> הוסף מוצר </button>
 
-<mat-form-field >
-    <mat-label>Search</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Example: pen" #input>
+<div>
+  <mat-form-field >
+    <mat-label>חפש</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="" #input>
   </mat-form-field>
   
+</div>
   <div class="mat-elevation-z8">
     <table mat-table class="full-width-table" matSort aria-label="Products" [dataSource]="datasource">
 
       <!-- Name Column -->
       <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>id</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>מס.</th>
         <td mat-cell *matCellDef="let row">{{row.id}}</td>
       </ng-container>
 
       <ng-container matColumnDef="barCode">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>barCode</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ברקוד</th>
         <td mat-cell *matCellDef="let row">{{row.barCode}}</td>
       </ng-container>
 
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>name</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>שם</th>
         <td mat-cell *matCellDef="let row">{{row.name}}</td>
       </ng-container>
 
       <ng-container matColumnDef="buyingPrice">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>buyingPrice</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>מחיר קנייה</th>
         <td mat-cell *matCellDef="let row">{{row?.buyingPrice}}</td>
       </ng-container>
 
       <ng-container matColumnDef="sellingPrice">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>sellingPrice</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>מחיר המכירה</th>
         <td mat-cell *matCellDef="let row">{{row.sellingPrice}}</td>
       </ng-container>
 
       <ng-container matColumnDef="description">
-        <th mat-header-cell class="clear-table-cell" *matHeaderCellDef mat-sort-header>description</th>
-        <td mat-cell class="clear-table-cell" *matCellDef="let productType">
-            <mat-icon color="primary" matTooltip="{{productType.description}}">speaker_notes</mat-icon>
+        <th mat-header-cell class="clear-table-cell" *matHeaderCellDef mat-sort-header>תיאור</th>
+        <td mat-cell class="clear-table-cell" *matCellDef="let p">
+            <mat-icon color="primary" *ngIf="p.description" matTooltip="{{p.description}}">speaker_notes</mat-icon>
         </td>
     </ng-container>
 
 
       <ng-container matColumnDef="productType">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Product type</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>סוג</th>
         <td mat-cell *matCellDef="let row">{{row.productType.name}}</td>
       </ng-container>
 
@@ -52,7 +54,7 @@
       <!-- Actions Column -->
       
     <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>actions</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
       <td mat-cell *matCellDef="let row">
         <button mat-button (click)="editProduct(row)">
           <mat-icon color="primary">edit_note</mat-icon>

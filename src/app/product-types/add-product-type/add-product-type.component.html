@@ -1,21 +1,21 @@
-<h2 mat-dialog-title>Add ProductType</h2>
+<h2 mat-dialog-title>הוסף סוג מוצר</h2>
 
 <form [formGroup]="productTypeForm" (ngSubmit)="onSubmit()">
     <mat-dialog-content>
         <mat-form-field appearance="outline">
-            <mat-label>Product Name</mat-label>
+            <mat-label>שם סוג מוצר</mat-label>
             <input matInput formControlName="name" id="name" type="text" required />
         </mat-form-field>
 
         <mat-form-field appearance="fill">
-            <mat-label>Description</mat-label>
+            <mat-label>תיאור</mat-label>
             <textarea matInput formControlName="description" id="description" type="text"></textarea>
         </mat-form-field>
     </mat-dialog-content>
 
-    <mat-dialog-actions align="end">
-        <button mat-raised-button mat-dialog color="primary" id="submit" type="submit">Save</button>
-        <button mat-raised-button mat-dialog-close color="warn">Cancel</button>
+    <mat-dialog-actions style="justify-content: space-between;">
+        <button mat-raised-button mat-dialog color="primary" id="submit" type="submit">שמור</button>
+         <button mat-raised-button mat-dialog-close color="warn">חזרה</button>
     </mat-dialog-actions>
 
 </form>

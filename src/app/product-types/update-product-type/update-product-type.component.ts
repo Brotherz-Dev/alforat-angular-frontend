@@ -21,7 +21,7 @@ export class UpdateProductTypeComponent implements OnInit {
     this.productTypeForm = this.formBuilder.group({
       id: [data.id, Validators.required],
       name: [data.name, Validators.required],
-      description: [data.description, Validators.required],
+      description: [data.description],
       
     })
    }

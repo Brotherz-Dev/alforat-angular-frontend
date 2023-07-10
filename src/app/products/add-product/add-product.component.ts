@@ -20,8 +20,8 @@ export class AddProductComponent implements OnInit {
     this.productForm = this.formBuilder.group({
       barCode: ['', Validators.required],
       name: ['', Validators.required],
-      buyingPrice: [0, Validators.required],
-      sellingPrice: [0, Validators.required],
+      buyingPrice: [0],
+      sellingPrice: [0, [Validators.required,Validators.min(0.1)]],
       description: [''],
       productType_id:['',Validators.required]
     })
