@@ -34,8 +34,8 @@
 
 
 <mat-form-field>
-    <mat-label>BarCode Input</mat-label>
-    <input matInput (keyup.enter)="searchProduct($event)" placeholder="Example: pen" #input>
+    <mat-label>קלט ברקוד</mat-label>
+    <input matInput (keyup.enter)="searchProduct(input.value)" placeholder="Example: pen" #input>
 </mat-form-field>
 
 

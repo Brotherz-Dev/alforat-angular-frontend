@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProductService } from 'src/app/services/products/product.service';
 import { CreateSaleStateDTO, Product,SaleState} from 'src/app/shared';
@@ -54,8 +54,8 @@ export class StartSaleTableComponent implements OnInit {
     this.showCustomerInputs = !this.showCustomerInputs;
   }
 
-  searchProduct(event: Event) {
-    const input = (event.target as HTMLInputElement).value;
+  searchProduct(input : string) {
+    // const input = (event.target as HTMLInputElement).value;
     this.productService.getProductByBarCode(input)
       .subscribe({
         next: (value) => {
@@ -177,5 +177,34 @@ export class StartSaleTableComponent implements OnInit {
       return;
     }
     // (await this.reportService.generateSaleReport({...this.saleForm.value, "id": this.saleId})).download(`report-${new Date().toISOString()}.pdf`);
+  }
+
+
+  barCodeListener = "";
+
+  isBarcodeListining = true;
+
+  toggleBarcodeListener(): void {
+    this.isBarcodeListining = !this.isBarcodeListining;
+  }
+
+  addString(str: string): void {
+    this.barCodeListener = this.barCodeListener + str;
+  }
+
+  clearResult(): void {
+    this.barCodeListener = "";
+  }
+
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    if (this.isBarcodeListining) {
+      if (event.key == "Enter") {
+        this.searchProduct(this.barCodeListener);
+        this.clearResult();
+      } else {
+        this.addString(event.key);
+      }
+    }
   }
 }
