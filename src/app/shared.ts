@@ -35,7 +35,7 @@ export interface SaleState {
 }
 
 export interface CreateSaleStateDTO {
-    product_id?: number;
+    productId?: number;
     productBarCode?: string;
     productName?: string;
     quantity: number
@@ -48,7 +48,7 @@ export interface CreateSaleDTO{
     customerId?: string;
     customerCity?: string;
     description?: string;
-    saleStates:CreateSaleDTO[];
+    saleStates:CreateSaleStateDTO[];
 }
 export interface Sale{
     id:number;

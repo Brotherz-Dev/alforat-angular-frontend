@@ -59,13 +59,13 @@
         <!-- price Column -->
         <ng-container matColumnDef="price">
             <th mat-header-cell *matHeaderCellDef> מחיר </th>
-            <td mat-cell *matCellDef="let element"> <input type="number" id="replyNumber" min="0.1" value="{{element.price}}"> </td>
+            <td mat-cell *matCellDef="let element"> <input type="number" min="0.1" (input)="onPriceChangeChanges($event , element)" value="{{element.price}}"> </td>
         </ng-container>
 
         <!-- count Column -->
         <ng-container matColumnDef="count">
             <th mat-header-cell *matHeaderCellDef> כמות </th>
-            <td mat-cell *matCellDef="let element"> <input type="number" id="replyNumber" min="1" step="1" value="{{element.quantity}}"> </td>
+            <td mat-cell *matCellDef="let element"> <input type="number" min="1" step="1" (input)="onQuantityChanges($event , element)" value="{{element.quantity}}"> </td>
             <mat-footer-cell *matFooterCellDef aria-colspan="2"> סה"כ </mat-footer-cell>
         </ng-container>
 

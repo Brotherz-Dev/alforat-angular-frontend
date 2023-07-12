@@ -1,27 +1,27 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Sale, SaleDashboard } from 'src/app/shared';
+import { CreateSaleDTO, Sale, SaleDashboard } from 'src/app/shared';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SaleService {
 
-  private server_url: string = 'http://localhost:8000';
 
   constructor(private http:HttpClient) { }
 
-  postSale(sale: Sale): Observable<Sale> {
-    return this.http.post<Sale>(`${this.server_url}/sales`, sale);
+  postSale(sale: CreateSaleDTO): Observable<Sale> {
+    return this.http.post<Sale>(`${environment.apiUrl}/sale/add`, sale);
   }
   getSales(): Observable<Sale[]> {
-    return this.http.get<Sale[]>(`${this.server_url}/sales`);
+    return this.http.get<Sale[]>(`${environment.apiUrl}/sales`);
   }
   getSalesDasboard(): Observable<SaleDashboard> {
-    return this.http.get<SaleDashboard>(`${this.server_url}/sales/dashboard`);
+    return this.http.get<SaleDashboard>(`${environment.apiUrl}/sales/dashboard`);
   }
   getSaleById(id : String): Observable<Sale> {
-    return this.http.get<Sale>(`${this.server_url}/sales/`+id);
+    return this.http.get<Sale>(`${environment.apiUrl}/sale/id/`+id);
   }
 }

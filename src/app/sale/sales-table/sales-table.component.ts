@@ -11,7 +11,7 @@ import { filter } from 'rxjs';
 import { ReportService } from 'src/app/services/reporting/report.service';
 
 import { SaleService } from 'src/app/services/sales/sale.service';
-import { Sale, SaleState } from 'src/app/shared';
+import { CreateSaleDTO, CreateSaleStateDTO, Sale, SaleState } from 'src/app/shared';
 
 @Component({
   selector: 'app-sales-table',
@@ -23,10 +23,10 @@ export class SalesTableComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns: string[] = ['name', 'barCode', 'price', 'count', 'calculatedPrice'];
+  displayedColumns: string[] = ['name', 'price', 'count', 'calculatedPrice'];
 
   datasource: MatTableDataSource<SaleState> = new MatTableDataSource<SaleState>();
-  states: SaleState[] = [];
+  states: CreateSaleStateDTO[] = [];
   
   sale : Sale | undefined;
   sucessAudio: HTMLAudioElement;
@@ -56,6 +56,7 @@ export class SalesTableComponent implements OnInit {
     this.saleService.getSaleById(input)
     .subscribe({
       next: (value) => {
+        console.log(value);
         this.sucessAudio.load();
         this.sucessAudio.play();
         this.sale = value;
