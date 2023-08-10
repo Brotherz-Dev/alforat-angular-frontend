@@ -28,7 +28,6 @@ const routes: Routes = [
     ]
   },
   { path: 'startSale', component: StartSaleComponent, canActivate: [AuthGuard] },
-
   {
     path: 'app', component: DashboardLayoutComponent, canActivate: [AuthGuard], children: [
       { path: 'dashboard', component: DashboardHomeComponent, canActivate: [AuthGuard] },
@@ -41,9 +40,9 @@ const routes: Routes = [
       { path: '**', component: PageNotFoundComponent }
     ]
   },
+  { path: 'page-not-found', component: PageNotFoundComponent },
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
-  { path: "**" , component: PageNotFoundComponent },
-  { path: 'page-not-found', component: PageNotFoundComponent }
+  { path: "**" , component: PageNotFoundComponent }
 ];
 
 @NgModule({
