@@ -1,7 +1,8 @@
 .full-width-table {
     width: fit-content;
     direction: rtl;
-    }
+}
+
     
 .mat-form-field {
     font-size: 14px;
@@ -39,5 +40,9 @@ mat-form-field{
     border: 2px solid #ffffff;
     border-top-color: #000000;
     animation: spinner .8s linear infinite;
-  }
+}
+
+.table-container {
+    overflow: auto;
+}
 

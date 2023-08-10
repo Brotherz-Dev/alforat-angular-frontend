@@ -41,9 +41,13 @@ export class StartSaleTableComponent implements OnInit {
 
   showCustomerInputs = false;
 
+  addProductManual = false;
+
   saleId: number = -1;
 
   saleForm: FormGroup;
+
+  productFormManual: FormGroup;
 
   constructor(
     private productService: ProductService,
@@ -58,6 +62,11 @@ export class StartSaleTableComponent implements OnInit {
     this.errorAudio = new Audio();
     this.errorAudio.src = '../../../assets/error-sound-effect.mp3';
 
+    this.productFormManual = this.formBuilder.group({
+      price: [0, Validators.required],
+      name: ['', Validators.required]
+    });
+
     this.saleForm = this.formBuilder.group({
       customerName: [''],
       customerPhoneNumber: [''],
@@ -65,9 +74,13 @@ export class StartSaleTableComponent implements OnInit {
       customerCity: [''],
     });
   }
-  ngOnInit(): void {}
+  ngOnInit(): void { }
   showCustomerData() {
     this.showCustomerInputs = !this.showCustomerInputs;
+  }
+
+  addManualProductDisplay() {
+    this.addProductManual = !this.addProductManual;
   }
 
   searchProduct(input: string) {
@@ -167,7 +180,7 @@ export class StartSaleTableComponent implements OnInit {
       return;
     }
     const createSaleDto = {} as CreateSaleDTO;
-    createSaleDto.saleStates =this.states;
+    createSaleDto.saleStates = this.states;
     createSaleDto.customerName = this.saleForm.get('customerName')?.value;
     createSaleDto.customerId = this.saleForm.get('customerId')?.value;
     createSaleDto.customerPhoneNumber = this.saleForm.get('customerPhoneNumber')?.value;
@@ -205,6 +218,14 @@ export class StartSaleTableComponent implements OnInit {
     this.isBarcodeListining = !this.isBarcodeListining;
   }
 
+  disableBarCodeListener(): void {
+    this.isBarcodeListining = false;
+  }
+
+  enableBarCodeListener(): void {
+    this.isBarcodeListining = true;
+  }
+
   addString(str: string): void {
     this.barCodeListener = this.barCodeListener + str;
   }
@@ -213,13 +234,15 @@ export class StartSaleTableComponent implements OnInit {
     this.barCodeListener = '';
   }
 
+
+
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
     if (this.isBarcodeListining) {
       if (event.key == 'Enter') {
         this.searchProduct(this.barCodeListener);
         this.clearResult();
-      } else {
+      } else if ("0123456789".includes(event.key)) {
         this.addString(event.key);
       }
     }
