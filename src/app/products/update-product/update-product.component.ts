@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProductService } from 'src/app/services/products/product.service';
 import { ProductTypeService } from 'src/app/services/productTypes/product-type.service';
 import { Product, ProductType } from 'src/app/shared';
@@ -20,7 +20,7 @@ export class UpdateProductComponent implements OnInit ,AfterViewInit{
   selected: any ;
   
   constructor(private formBuilder: FormBuilder, private productTypeService: ProductTypeService,
-    private productService: ProductService,private changeDetectorRefs: ChangeDetectorRef, private snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: Product) {
+    private productService: ProductService,private changeDetectorRefs: ChangeDetectorRef, private notificationService: NotificationService, @Inject(MAT_DIALOG_DATA) public data: Product) {
     this.product = data;
     this.productForm = this.formBuilder.group({
       id: [data.id, Validators.required],
@@ -54,25 +54,18 @@ export class UpdateProductComponent implements OnInit ,AfterViewInit{
     if (this.productForm.valid) {
       this.productService.updateProduct(this.productForm.value).subscribe({
         next: (res) => {
-          this.openSnackBar('Product updated succesfully!');
-        },
+          this.notificationService.showSuccess('המוצר עודכן בהצלחה!','');
+                },
         error: (err) => {
           if (err.status === 409) {
-            this.openSnackBar('Error updating product!', false);
+            this.notificationService.showError('שגיאה בעדכון המוצר!', '');
           }
           else {
-            this.openSnackBar('Unknown Error!', false);
+            this.notificationService.showError('Unknown Error!', '');
           }
         }
       });
     }
 
   }
-  openSnackBar(message: string, success: boolean = true) {
-    this.snackBar.open(message, undefined, {
-      duration: 2000,
-      panelClass: ['mat-toolbar', success ? 'mat-primary' : 'mat-warn']
-    });
-  }
-
 }

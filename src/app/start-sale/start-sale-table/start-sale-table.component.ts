@@ -13,10 +13,10 @@ import {
   Sale,
   SaleState,
 } from 'src/app/shared';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SaleService } from 'src/app/services/sales/sale.service';
 import { ReportService } from 'src/app/services/reporting/report.service';
+import { NotificationService } from 'src/app/services/notification/notification.service';
 
 @Component({
   selector: 'app-start-sale-table',
@@ -28,8 +28,8 @@ export class StartSaleTableComponent implements OnInit {
     new MatTableDataSource<CreateSaleStateDTO>();
   states: CreateSaleStateDTO[] = [];
   displayedColumns: string[] = [
-    'name',
     'barCode',
+    'name',
     'price',
     'count',
     'calculatedPrice',
@@ -38,11 +38,13 @@ export class StartSaleTableComponent implements OnInit {
   sucessAudio: HTMLAudioElement;
   errorAudio: HTMLAudioElement;
   lastAddedProductIndex: number = -1;
+
   loading = false;
+  loadingDownload = false;
 
   showCustomerInputs = false;
 
-  addProductManual = false;
+  addProductManual = true;
 
   saleId: number = -1;
   sale : Sale | undefined ;
@@ -53,11 +55,11 @@ export class StartSaleTableComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private snackBar: MatSnackBar,
     private changeDetectorRefs: ChangeDetectorRef,
     private formBuilder: FormBuilder,
     private saleService: SaleService,
-    private reportService: ReportService
+    private reportService: ReportService,
+    private notificationService : NotificationService
   ) {
     this.sucessAudio = new Audio();
     this.sucessAudio.src = '../../../assets/Barcode-scanner-beep-sound.mp3';
@@ -99,9 +101,9 @@ export class StartSaleTableComponent implements OnInit {
         this.errorAudio.load();
         this.errorAudio.play();
         if (err.status === 404) {
-          this.openSnackBar('Product Not Found', false);
+          this.notificationService.showError('מוצר לא נמצא!', '');
         } else {
-          this.openSnackBar('Unknown Error!', false);
+          this.notificationService.showError('Unknown Error!', '');
         }
       },
     });
@@ -130,22 +132,22 @@ export class StartSaleTableComponent implements OnInit {
     this.lastAddedProductIndex = this.states.length - 1;
     return;
   }
-  addManualProduct(name: string, price: number) {
+  addManualProduct() {
+    if(this.productFormManual.invalid){
+      return;
+    }
     const state: CreateSaleStateDTO = {
       quantity: 1,
-      productName: name,
-      price: price,
+      productName: this.productFormManual.get('name')?.value,
+      price: this.productFormManual.get('price')?.value,
     };
     this.states.push(state);
+    this.datasource.data = this.states;
+
     this.lastAddedProductIndex = this.states.length - 1;
     return;
   }
-  openSnackBar(message: string, success: boolean = true) {
-    this.snackBar.open(message, undefined, {
-      duration: 4000,
-      panelClass: ['mat-toolbar', success ? 'mat-primary' : 'mat-warn'],
-    });
-  }
+
 
   calculateTotal() {
     const x = this.states
@@ -176,7 +178,7 @@ export class StartSaleTableComponent implements OnInit {
       this.saleForm.value.saleStates === undefined ||
       this.saleForm.value.saleStates.length === 0
     ) {
-      this.openSnackBar('Should be at least one Item !', false);
+      this.notificationService.showInfo('צריך להכיל לפחות מוצר אחד!', '');
       this.loading = false;
       return;
     }
@@ -188,16 +190,16 @@ export class StartSaleTableComponent implements OnInit {
     createSaleDto.customerCity = this.saleForm.get('customerCity')?.value;
     this.saleService.postSale(createSaleDto).subscribe({
       next: (res) => {
-        this.openSnackBar(`Sale added successfully! !`);
+        this.notificationService.showSuccess('נוסף בהצלחה!','');
         this.saleId = res.id;
         this.sale = res;
-        this.loading = true;
+        this.loading = false;
       },
       error: (err) => {
         if (err.status === 409) {
-          this.openSnackBar('Already found in database!', false);
+          this.notificationService.showError('כבר נמצא במסד הנתונים!', '');
         } else {
-          this.openSnackBar('Unknown Error!', false);
+          this.notificationService.showError('Unknown Error!', '');
         }
       },
     });
@@ -205,15 +207,19 @@ export class StartSaleTableComponent implements OnInit {
   }
   async generateSaleReport() {
     if (this.saleId == -1 || this.sale=== undefined) {
-      this.openSnackBar('Sale must be saved first!', false);
+      this.notificationService.showWarning('יש לשמור תחילה את המכירה!','');
       return;
     }
+    this.loadingDownload = true;
     this.saleService.getSaleById(this.saleId).subscribe(async (data) =>{
       if(!data){
-        this.openSnackBar('Error',false);
+        this.notificationService.showError('Error','');
         return;
       }
-      (await this.reportService.generateSaleReport(data)).download(`report-${new Date().toISOString()}.pdf`);})
+      (await this.reportService.generateSaleReport(data)).download(`report-${new Date().toISOString()}.pdf`);
+      this.loadingDownload = false;
+    })
+    this.loadingDownload = false;
   }
 
   barCodeListener = '';

@@ -2,16 +2,14 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { filter } from 'rxjs';
+import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ReportService } from 'src/app/services/reporting/report.service';
 
 import { SaleService } from 'src/app/services/sales/sale.service';
-import { CreateSaleDTO, CreateSaleStateDTO, Sale, SaleState } from 'src/app/shared';
+import {  CreateSaleStateDTO, Sale, SaleState } from 'src/app/shared';
 
 @Component({
   selector: 'app-sales-table',
@@ -33,7 +31,7 @@ export class SalesTableComponent implements OnInit {
   errorAudio: HTMLAudioElement;
 
 
-  constructor(private saleService: SaleService, private snackBar: MatSnackBar, private changeDetectorRefs: ChangeDetectorRef
+  constructor(private saleService: SaleService, private notificationService: NotificationService, private changeDetectorRefs: ChangeDetectorRef
     , private formBuilder: FormBuilder, private reportService:ReportService) {
 
       this.sucessAudio = new Audio();
@@ -68,20 +66,14 @@ export class SalesTableComponent implements OnInit {
         this.errorAudio.play();
         if (err.status === 404) {
           this.sale = undefined;
-          this.openSnackBar('Sale Not Found', false);
+          this.notificationService.showInfo('מכירה לא נמצאה!', '');
         }
         else {
           this.sale = undefined;
-          this.openSnackBar('Unknown Error!', false);
+          this.notificationService.showError('Unknown Error!', '');
         }
       }
       
-    });
-  }
-  openSnackBar(message: string, success: boolean = true) {
-    this.snackBar.open(message, undefined, {
-      duration: 4000,
-      panelClass: ['mat-toolbar', success ? 'mat-primary' : 'mat-warn']
     });
   }
 

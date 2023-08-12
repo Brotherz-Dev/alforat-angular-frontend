@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProductTypeService } from 'src/app/services/productTypes/product-type.service';
 
 @Component({
@@ -12,7 +12,7 @@ export class AddProductTypeComponent implements OnInit {
 
   productTypeForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private productTypeService: ProductTypeService, private snackBar: MatSnackBar) {
+  constructor(private formBuilder: FormBuilder, private productTypeService: ProductTypeService, private notificationService : NotificationService) {
     this.productTypeForm = this.formBuilder.group({
       name: ['', Validators.required],
       description: ['']
@@ -28,26 +28,19 @@ export class AddProductTypeComponent implements OnInit {
       this.productTypeService.postProductType(this.productTypeForm.value)
         .subscribe({
           next: (res) => {
-            this.openSnackBar(`${this.productTypeForm.value.name} Added Succesfully !`);
+            this.notificationService.showSuccess(`${this.productTypeForm.value.name} נוסף בהצלחה !`,'');
             this.productTypeForm.reset();
           },
           error: (err) => {
             if (err.status === 409) {
-              this.openSnackBar('Already Found in Database', false);
+              this.notificationService.showError('המוצר כבר קיים!','');
             }
             else {
-              this.openSnackBar('Unknown Error!', false);
+              this.notificationService.showError('Unknown Error!', '');
             }
           }
         });
     }
-  }
-
-  openSnackBar(message: string, success: boolean = true) {
-    this.snackBar.open(message, undefined, {
-      duration: 4000,
-      panelClass: ['mat-toolbar', success ? 'mat-primary' : 'mat-warn']
-    });
   }
 
 }

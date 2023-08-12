@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProductTypeService } from 'src/app/services/productTypes/product-type.service';
 import { ProductType } from 'src/app/shared';
 
@@ -16,7 +16,7 @@ export class UpdateProductTypeComponent implements OnInit {
 
   productType: ProductType;
 
-  constructor(private formBuilder : FormBuilder, private productTypeService: ProductTypeService, private snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: ProductType) { 
+  constructor(private formBuilder : FormBuilder, private productTypeService: ProductTypeService, private notificationService : NotificationService, @Inject(MAT_DIALOG_DATA) public data: ProductType) { 
     this.productType = data;
     this.productTypeForm = this.formBuilder.group({
       id: [data.id, Validators.required],
@@ -32,25 +32,18 @@ export class UpdateProductTypeComponent implements OnInit {
   onSubmit(): void {
     this.productTypeService.updateProductType(this.productTypeForm.value).subscribe({
       next: (res) => {
-        this.openSnackBar('Product Type updated succesfully!');
+        this.notificationService.showSuccess('סוג המוצר עודכן בהצלחה!','');
       },
       error: (err) => {
         if (err.status === 409) {
-          this.openSnackBar('Error updating Product Type!', false);
+          this.notificationService.showError('כבר קיים!','');
         }
         else {
-          this.openSnackBar('Unknown Error!', false);
+          this.notificationService.showError('Unknown Error!', '');
         }
       }
     });
 
-  }
-  
-  openSnackBar(message: string, success: boolean = true) {
-    this.snackBar.open(message, undefined, {
-      duration: 2000,
-      panelClass: ['mat-toolbar', success? 'mat-primary': 'mat-warn']
-    });
   }
 
 }

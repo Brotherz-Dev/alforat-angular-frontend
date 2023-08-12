@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProductService } from 'src/app/services/products/product.service';
 import { ProductTypeService } from 'src/app/services/productTypes/product-type.service';
 import { ProductType } from 'src/app/shared';
@@ -16,14 +16,14 @@ export class AddProductComponent implements OnInit {
   productTypes: ProductType[] = [];
 
   constructor(private formBuilder: FormBuilder, private productService: ProductService,
-    private productTypeService: ProductTypeService, private changeDetectorRefs: ChangeDetectorRef, private snackBar: MatSnackBar) {
+    private productTypeService: ProductTypeService, private changeDetectorRefs: ChangeDetectorRef, private notificationService: NotificationService) {
     this.productForm = this.formBuilder.group({
       barCode: ['', Validators.required],
       name: ['', Validators.required],
       buyingPrice: [0],
-      sellingPrice: [0, [Validators.required,Validators.min(0.1)]],
+      sellingPrice: [0, [Validators.required, Validators.min(0.1)]],
       description: [''],
-      productType_id:['',Validators.required]
+      productType_id: ['', Validators.required]
     })
 
   }
@@ -48,27 +48,22 @@ export class AddProductComponent implements OnInit {
       this.productService.postProduct(this.productForm.value)
         .subscribe({
           next: (res) => {
-            this.openSnackBar(`${this.productForm.value.name} added successfully! !`);
+            this.notificationService.showSuccess(`${this.productForm.value.name} נוסף בהצלחה!`, '');
             this.productForm.reset();
           },
           error: (err) => {
             if (err.status === 409) {
-              this.openSnackBar('Already found in database!', false);
+              this.notificationService.showError('כבר נמצא במסד הנתונים!', '');
             }
             else {
-              this.openSnackBar('Unknown Error!', false);
+              this.notificationService.showError('Unkown Error', '');
             }
           }
         });
     }
   }
 
-  openSnackBar(message: string, success: boolean = true) {
-    this.snackBar.open(message, undefined, {
-      duration: 4000,
-      panelClass: ['mat-toolbar', success ? 'mat-primary' : 'mat-warn']
-    });
-  }
+
   get productType() {
     return this.productForm.get('typeId');
   }
