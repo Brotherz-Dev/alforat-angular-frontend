@@ -21,7 +21,7 @@ export class SaleService {
   getSalesDasboard(): Observable<SaleDashboard> {
     return this.http.get<SaleDashboard>(`${environment.apiUrl}/sales/dashboard`);
   }
-  getSaleById(id : String): Observable<Sale> {
+  getSaleById(id : number): Observable<Sale> {
     return this.http.get<Sale>(`${environment.apiUrl}/sale/id/`+id);
   }
 }

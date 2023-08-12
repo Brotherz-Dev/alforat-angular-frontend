@@ -53,7 +53,7 @@ export class SalesTableComponent implements OnInit {
 
   applyFilter(event: Event) {
     const input = (event.target as HTMLInputElement).value;
-    this.saleService.getSaleById(input)
+    this.saleService.getSaleById(Number(input))
     .subscribe({
       next: (value) => {
         console.log(value);

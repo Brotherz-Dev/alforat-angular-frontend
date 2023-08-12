@@ -10,6 +10,7 @@ import {
   CreateSaleDTO,
   CreateSaleStateDTO,
   Product,
+  Sale,
   SaleState,
 } from 'src/app/shared';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -44,6 +45,7 @@ export class StartSaleTableComponent implements OnInit {
   addProductManual = false;
 
   saleId: number = -1;
+  sale : Sale | undefined ;
 
   saleForm: FormGroup;
 
@@ -170,7 +172,6 @@ export class StartSaleTableComponent implements OnInit {
   saveSale(): void {
     this.loading = false;
     this.saleForm.value.saleStates = this.datasource.data;
-    console.log(this.saleForm.value);
     if (
       this.saleForm.value.saleStates === undefined ||
       this.saleForm.value.saleStates.length === 0
@@ -187,9 +188,9 @@ export class StartSaleTableComponent implements OnInit {
     createSaleDto.customerCity = this.saleForm.get('customerCity')?.value;
     this.saleService.postSale(createSaleDto).subscribe({
       next: (res) => {
-        console.log(res);
         this.openSnackBar(`Sale added successfully! !`);
         this.saleId = res.id;
+        this.sale = res;
         this.loading = true;
       },
       error: (err) => {
@@ -203,11 +204,16 @@ export class StartSaleTableComponent implements OnInit {
     this.loading = false;
   }
   async generateSaleReport() {
-    if (this.saleId == -1) {
+    if (this.saleId == -1 || this.sale=== undefined) {
       this.openSnackBar('Sale must be saved first!', false);
       return;
     }
-    // (await this.reportService.generateSaleReport({...this.saleForm.value, "id": this.saleId})).download(`report-${new Date().toISOString()}.pdf`);
+    this.saleService.getSaleById(this.saleId).subscribe(async (data) =>{
+      if(!data){
+        this.openSnackBar('Error',false);
+        return;
+      }
+      (await this.reportService.generateSaleReport(data)).download(`report-${new Date().toISOString()}.pdf`);})
   }
 
   barCodeListener = '';
