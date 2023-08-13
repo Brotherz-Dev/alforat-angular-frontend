@@ -46,3 +46,24 @@ mat-form-field{
     overflow: auto;
 }
 
+.table-container {
+    max-height: 420px; /* Set a maximum height for the container */
+    scroll-behavior: smooth; /* Enable smooth scrolling behavior */
+  }
+
+  .table td, .table th {
+    padding: 0.2rem;
+    border-top: 1px solid #dee2e6;
+}
+.table {
+    width: 100%;
+    margin-bottom: 0rem;
+    color: #212529;
+}
+  
+  
+  
+  
+  
+  
+  

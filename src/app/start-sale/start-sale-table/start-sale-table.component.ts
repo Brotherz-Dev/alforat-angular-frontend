@@ -1,8 +1,10 @@
 import {
   ChangeDetectorRef,
   Component,
+  ElementRef,
   HostListener,
   OnInit,
+  ViewChild,
 } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProductService } from 'src/app/services/products/product.service';
@@ -24,6 +26,7 @@ import { NotificationService } from 'src/app/services/notification/notification.
   styleUrls: ['./start-sale-table.component.css'],
 })
 export class StartSaleTableComponent implements OnInit {
+  @ViewChild('tableProducts', { static: false }) tableProducts: ElementRef | undefined;
   datasource: MatTableDataSource<CreateSaleStateDTO> =
     new MatTableDataSource<CreateSaleStateDTO>();
   states: CreateSaleStateDTO[] = [];
@@ -44,10 +47,10 @@ export class StartSaleTableComponent implements OnInit {
 
   showCustomerInputs = false;
 
-  addProductManual = true;
+  addProductManual = false;
 
   saleId: number = -1;
-  sale : Sale | undefined ;
+  sale: Sale | undefined;
 
   saleForm: FormGroup;
 
@@ -59,7 +62,7 @@ export class StartSaleTableComponent implements OnInit {
     private formBuilder: FormBuilder,
     private saleService: SaleService,
     private reportService: ReportService,
-    private notificationService : NotificationService
+    private notificationService: NotificationService
   ) {
     this.sucessAudio = new Audio();
     this.sucessAudio.src = '../../../assets/Barcode-scanner-beep-sound.mp3';
@@ -78,7 +81,9 @@ export class StartSaleTableComponent implements OnInit {
       customerCity: [''],
     });
   }
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.scrollToLastIndex();
+   }
   showCustomerData() {
     this.showCustomerInputs = !this.showCustomerInputs;
   }
@@ -96,6 +101,8 @@ export class StartSaleTableComponent implements OnInit {
         this.addProductToArray(value);
         this.datasource.data = this.states;
         this.changeDetectorRefs.detectChanges();
+        this.scrollToLastIndex();
+
       },
       error: (err) => {
         this.errorAudio.load();
@@ -107,6 +114,15 @@ export class StartSaleTableComponent implements OnInit {
         }
       },
     });
+  }
+
+  scrollToLastIndex() {
+    if (this.tableProducts && this.states[this.states.length-1]) {
+      const targetRow = this.tableProducts.nativeElement.querySelector(`#product-id-${this.lastAddedProductIndex}`);
+      if (targetRow) {
+        targetRow.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
   }
   addProductToArray(p: Product) {
     let added = false;
@@ -133,7 +149,7 @@ export class StartSaleTableComponent implements OnInit {
     return;
   }
   addManualProduct() {
-    if(this.productFormManual.invalid){
+    if (this.productFormManual.invalid) {
       return;
     }
     const state: CreateSaleStateDTO = {
@@ -190,7 +206,7 @@ export class StartSaleTableComponent implements OnInit {
     createSaleDto.customerCity = this.saleForm.get('customerCity')?.value;
     this.saleService.postSale(createSaleDto).subscribe({
       next: (res) => {
-        this.notificationService.showSuccess('נוסף בהצלחה!','');
+        this.notificationService.showSuccess('נוסף בהצלחה!', '');
         this.saleId = res.id;
         this.sale = res;
         this.loading = false;
@@ -206,21 +222,31 @@ export class StartSaleTableComponent implements OnInit {
     this.loading = false;
   }
   async generateSaleReport() {
-    if (this.saleId == -1 || this.sale=== undefined) {
-      this.notificationService.showWarning('יש לשמור תחילה את המכירה!','');
+    if (this.saleId == -1 || this.sale === undefined) {
+      this.notificationService.showWarning('יש לשמור תחילה את המכירה!', '');
       return;
     }
     this.loadingDownload = true;
-    this.saleService.getSaleById(this.saleId).subscribe(async (data) =>{
-      if(!data){
-        this.notificationService.showError('Error','');
-        return;
-      }
-      (await this.reportService.generateSaleReport(data)).download(`report-${new Date().toISOString()}.pdf`);
-      this.loadingDownload = false;
-    })
+
+    this.saleService.getSaleById(this.saleId).subscribe({
+      next: async (data: Sale) => {
+        if (!data) {
+          this.notificationService.showError('Error', '');
+          return;
+        }
+        (await this.reportService.generateSaleReport(data)).download(`report-${new Date().toISOString()}.pdf`);
+        this.loadingDownload = false;
+      },
+      error: (err) => {
+        this.errorAudio.load();
+        this.errorAudio.play();
+        this.notificationService.showError('Unknown Error!', '');
+        this.loadingDownload = false;
+      },
+    });
     this.loadingDownload = false;
   }
+
 
   barCodeListener = '';
 
