@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Sale } from 'src/app/shared';
 import jsreport from '@jsreport/browser-client';
 import { SaleService } from '../sales/sale.service';
+import { environment } from 'src/environments/environment';
 
-Object.assign(jsreport, {serverUrl: "http://localhost:5488"});
+Object.assign(jsreport, {serverUrl: environment.jsreportURL});
 
 @Injectable({
   providedIn: 'root'

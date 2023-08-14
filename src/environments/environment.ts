@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl : "http://192.168.5.101:3000"
+  apiUrl : "http://192.168.5.129:3000",
+  jsreportURL:"http://192.168.5.129:5488"
 };
 
 /*
